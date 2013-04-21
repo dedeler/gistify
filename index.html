@@ -7,9 +7,11 @@
 	<script src="gistify.js"></script>
 </head>
 <body>
-	<button id="loadButton">Load</button>
+	<button id="loadButton">Show</button>
+	<button id="loadButton2">Show (id embedded in div)</button>
 	<button id="newButton">New</button>
 	<div id="targetDiv"></div>
+	<div id="targetDiv2" data-gistid="5412353"></div>
 
 	<script type="text/javascript">
 	$('#loadButton').click(function() {
@@ -17,6 +19,10 @@
 			mode:'show',
 			gistId:'5412353'
 		});	
+	});
+
+	$('#loadButton2').click(function() {
+		$('#targetDiv2').gistify();	
 	});
 
 	$('#newButton').click(function() {

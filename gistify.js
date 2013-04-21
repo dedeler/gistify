@@ -42,9 +42,6 @@
     
     if(this.options.firstTime == false){
 
-      //TODO extract element data attributes if any
-      //if data-gist-id is present assume mode:show or edit
-
       if(this.options.mode == 'save'){
         this.save(element, this.options);
       }
@@ -55,6 +52,15 @@
         throw new GistifyError('[Invalid argument] When gistify once initialized on a DOM element, in further calls, "options.mode" can be "save" or "get" but was "' + this.options.mode + '"');
       }
       return;
+    }
+
+    //TODO extract element data attributes if any
+    //if data-gist-id is present assume mode:show or edit
+    debugger;
+    var gistId = $(element).data('gistid');
+    if(gistId){
+      this.options.mode = 'show';
+      this.options.gistId = gistId;
     }
 
     var thiz = this;
