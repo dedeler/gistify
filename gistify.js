@@ -180,7 +180,8 @@
       var height = bubble.height() - $('.gistify-meta').outerHeight() - 3;//3 for padding
       bubble.find('#' + divId).css('height', height + 'px');
 
-      var aceEditor = ace.edit(divId);
+      var el = sizeDeterminer.find('#' + divId)[0];
+      var aceEditor = ace.edit(el);
       //determine language by extension
       var mode = modelist.getModeFromPath(params.fileName);
       aceEditor.getSession().setMode(mode.mode);
