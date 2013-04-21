@@ -21,7 +21,8 @@ Possible options and defaults are shown:
 	description: true,// Boolean, Optional whether show gist description
 	saveButton: false, // Boolean, Optional only meaningful when mode:create
 	height: '300px', // String, Optional
-	width: '400px'//  String, Optional
+	width: '400px',//  String, Optional
+	callback: undefined //function(data) meaningful when mode:get. data is the json object ready to be send to github api
 }
 ```
 

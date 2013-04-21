@@ -238,6 +238,10 @@
 	line-height:16px;
 }
 
+.mini-icon-show {
+	padding:8px 3px 0 10px;
+}
+
 .mini-icon-code:before {
 	content:"\f05f";
 }

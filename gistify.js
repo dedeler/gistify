@@ -9,6 +9,28 @@
 
   var modeSelectHtml = '<select class="gistify-mode-select" size="1"><option value="abap">ABAP</option><option value="asciidoc">AsciiDoc</option><option value="c9search">C9Search</option><option value="coffee">CoffeeScript</option><option value="coldfusion">ColdFusion</option><option value="csharp">C#</option><option value="css">CSS</option><option value="curly">Curly</option><option value="dart">Dart</option><option value="diff">Diff</option><option value="dot">Dot</option><option value="ftl">FreeMarker</option><option value="glsl">Glsl</option><option value="golang">Go</option><option value="groovy">Groovy</option><option value="haxe">haXe</option><option value="haml">HAML</option><option value="html">HTML</option><option value="c_cpp">C/C++</option><option value="clojure">Clojure</option><option value="jade">Jade</option><option value="java">Java</option><option value="jsp">JSP</option><option value="javascript">JavaScript</option><option value="json">JSON</option><option value="jsx">JSX</option><option value="latex">LaTeX</option><option value="less">LESS</option><option value="lisp">Lisp</option><option value="scheme">Scheme</option><option value="liquid">Liquid</option><option value="livescript">LiveScript</option><option value="logiql">LogiQL</option><option value="lua">Lua</option><option value="luapage">LuaPage</option><option value="lucene">Lucene</option><option value="lsl">LSL</option><option value="makefile">Makefile</option><option value="markdown">Markdown</option><option value="mushcode">TinyMUSH</option><option value="objectivec">Objective-C</option><option value="ocaml">OCaml</option><option value="pascal">Pascal</option><option value="perl">Perl</option><option value="pgsql">pgSQL</option><option value="php">PHP</option><option value="powershell">Powershell</option><option value="python">Python</option><option value="r">R</option><option value="rdoc">RDoc</option><option value="rhtml">RHTML</option><option value="ruby">Ruby</option><option value="scad">OpenSCAD</option><option value="scala">Scala</option><option value="scss">SCSS</option><option value="sass">SASS</option><option value="sh">SH</option><option value="sql">SQL</option><option value="stylus">Stylus</option><option value="svg">SVG</option><option value="tcl">Tcl</option><option value="tex">Tex</option><option value="text" selected>Text</option><option value="textile">Textile</option><option value="tmsnippet">tmSnippet</option><option value="toml">toml</option><option value="typescript">Typescript</option><option value="vbscript">VBScript</option><option value="velocity">Velocity</option><option value="xml">XML</option><option value="xquery">XQuery</option><option value="yaml">YAML</option></select>';
 
+  var metaForCreate = '\
+    <div class="gistify-meta gistify-meta-create">\
+      <div class="gistify-filename-input-container">\
+        <a href="#" class="mini-icon mini-icon-remove-close gistify-remove-button"></a>\
+        <input class="gistify-filename" type="text" placeholder="'+ localize('Dosyayı adlandırın...') +'">\
+      </div>\
+      <div class="gistify-filename-select-container">' + modeSelectHtml + '</div>\
+    </div>';
+
+    var metaForShow = '\
+      <div class="gistify-meta gistify-meta-show">\
+        <span class="mini-icon mini-icon-show mini-icon-gist"></span>\
+        <span class="gistify-filename"></span>\
+        <div class="gistify-file-actions">\
+          <span class="gistify-language"></span>\
+          <ul class="gistify-button-group">\
+            <li><a href="" target="_blank" class="gistify-permalink" original-title="Permalink"><span class="mini-icon mini-icon-show mini-icon-link"></span></a></li>\
+            <li><a href="" target="_blank" class="gistify-raw-url" original-title="View Raw"><span class="mini-icon mini-icon-show mini-icon-code"></span></a></li>\
+          </ul>\
+        </div>\
+      </div>';
+
   //css injection
   $(function() {
     $('<link id="gistify-style" rel="stylesheet" type="text/css"></link>').appendTo('head');
@@ -22,7 +44,8 @@
     description: true,
     saveButton: false,//only meaningful when mode:create
     height: '300px',
-    width: '400px'
+    width: '400px',
+    callback: undefined //function meaningful when mode:get
   };
 
   //Gistify exception
@@ -37,8 +60,6 @@
 
     this.element = element;
     this.options = $.extend({}, defaults, options);
-    // this._defaults = defaults;
-    // this._name = pluginName;
     
     if(this.options.firstTime == false){
 
@@ -48,19 +69,13 @@
       else if(this.options.mode == 'get'){
         this.get(element, this.options);
       }
+      else if(this.options.mode == 'convertToEdit'){//user enters mode as 'edit' and it is converted to 'convertToEdit' in plugin init
+        this.edit(element, this.options);
+      }
       else{
-        throw new GistifyError('[Invalid argument] When gistify once initialized on a DOM element, in further calls, "options.mode" can be "save" or "get" but was "' + this.options.mode + '"');
+        throw new GistifyError('[Invalid argument] When gistify once initialized on a DOM element, in further calls, "options.mode" can be "save", "get" or "edit" but was "' + this.options.mode + '"');
       }
       return;
-    }
-
-    //TODO extract element data attributes if any
-    //if data-gist-id is present assume mode:show or edit
-    debugger;
-    var gistId = $(element).data('gistid');
-    if(gistId){
-      this.options.mode = 'show';
-      this.options.gistId = gistId;
     }
 
     var thiz = this;
@@ -71,12 +86,12 @@
     }
     else if(this.options.mode == 'show'){
       this.loadAceLibrary(function() {
-        thiz.show(element, thiz.options);
+        thiz.showOrEdit(element, thiz.options);
       });
     }
-    else if(this.options.mode == 'edit'){
+    else if(this.options.mode == 'convertToEdit'){
       this.loadAceLibrary(function() {
-        thiz.edit(element, thiz.options);
+        thiz.showOrEdit(element, thiz.options);
       });
     }
     else{
@@ -200,42 +215,13 @@
         sizeDeterminer: sizeDeterminer
       };
     },
-    create: function (element, options) {
-      //container is the element to be gistified
-      var container = $(element).addClass('gistify-container').empty();
-
-      this.buildDescription(container, options);
-
-      var index = container.find('.gistify-editor-container').length + 1;//total gists in this container + 1
-      var meta = '\
-      <div class="gistify-meta gistify-meta-create">\
-        <div class="gistify-filename-input-container">\
-          <a href="" class="mini-icon mini-icon-remove-close gistify-remove-button"></a>\
-          <input class="gistify-filename" type="text" placeholder="'+ localize('Dosyayı adlandırın...') +'">\
-        </div>\
-        <div class="gistify-filename-select-container">' + modeSelectHtml + '</div>\
-      </div>';
-
-      var retVal = this.buildAnEditor({
-        container: container,
-        options: options,
-        fileName: localize('Yeni dosya'),
-        id: 'gistifyEmbeddedGist-' + 'new' + '_' + index,
-        meta: meta
-      });
-      var thiz = this;
-
-      var sizeDeterminer = retVal.sizeDeterminer;
-      var aceEditor = retVal.aceEditor;
-
-      if(index == 1){
-        sizeDeterminer.find('.gistify-remove-button').remove();
-      }
-
+    bindCreateEvents: function(sizeDeterminer, aceEditor){
+      //mode select change event
       sizeDeterminer.find('.gistify-mode-select').change(function() {
         aceEditor.getSession().setMode(modelist.modesByName[$(this).val()].mode);
       });
 
+      //filename input change(keyup) event
       sizeDeterminer.find('.gistify-filename-input-container > input').keyup(function() {
         var mode = modelist.getModeFromPath($(this).val());
         aceEditor.getSession().setMode(mode.mode);
@@ -247,12 +233,24 @@
         else{
           sizeDeterminer.find('.gistify-mode-select').removeAttr('disabled');
         }
-
       });
 
+      //remove button click event
+      sizeDeterminer.find('.gistify-remove-button').click(function(event){
+        if(confirm(localize('Bu dosyayı silmek istediğinizden emin misiniz?'))){
+          sizeDeterminer.remove();
+        }
+        event.preventDefault();
+      });
+
+      sizeDeterminer.find('.gistify-filename-input-container > input').trigger('keyup');
+    },
+    appendFooter: function(container, options) {
+      var thiz = this;
       //append footer
       container.append('<div class="gistify-footer"><button class="gistify-new-btn gistify-btn">' + localize('Yeni dosya ekle'));
       container.find('.gistify-footer').css('width', options.width);
+      var index = container.find('.gistify-editor-container').length + 1;//total gists in this container + 1
 
       //bind footer new button's action
       container.find('.gistify-new-btn').click(function() {
@@ -261,17 +259,13 @@
           options: options,
           fileName: localize('Yeni dosya'),
           id: 'gistifyEmbeddedGist-' + 'new' + '_' + ++index,//don't forget to increase the index, otherwise no ace editor is shown
-          meta: meta
+          meta: metaForCreate
         });
 
-        retVal.sizeDeterminer.find('.gistify-remove-button').click(function(event){
-          if(confirm(localize('Bu dosyayı silmek istediğinizden emin misiniz?'))){
-            retVal.sizeDeterminer.remove();
-          }
-          debugger;
-          event.preventDefault();
-        });
+        //put filename into input field
+        retVal.sizeDeterminer.find('.gistify-filename-input-container > input').val(localize('Yeni dosya'));
 
+        thiz.bindCreateEvents(retVal.sizeDeterminer, retVal.aceEditor);
       });
 
       //append save button if desired
@@ -283,9 +277,39 @@
           //TODO
         });
       }
-
     },
-    show: function (element, options) {
+    create: function (element, options) {
+      //container is the element to be gistified
+      var container = $(element).addClass('gistify-container').empty();
+
+      this.buildDescription(container, options);
+
+      var index = container.find('.gistify-editor-container').length + 1;//total gists in this container + 1
+
+      var retVal = this.buildAnEditor({
+        container: container,
+        options: options,
+        fileName: localize('Yeni dosya'),
+        id: 'gistifyEmbeddedGist-' + 'new' + '_' + index,
+        meta: metaForCreate
+      });
+      var thiz = this;
+
+      var sizeDeterminer = retVal.sizeDeterminer;
+      var aceEditor = retVal.aceEditor;
+
+      if(index == 1){
+        sizeDeterminer.find('.gistify-remove-button').remove();
+      }
+
+      //put filename into input field
+      sizeDeterminer.find('.gistify-filename-input-container > input').val(localize('Yeni dosya'));
+
+      this.bindCreateEvents(sizeDeterminer, aceEditor);
+
+      this.appendFooter(container, options);
+    },
+    showOrEdit: function (element, options) {
       var thiz = this;
       jQuery.getJSON(gistApiUrl + '/' + options.gistId , function(data) {
         //container is the element to be gistified
@@ -299,25 +323,12 @@
 
             var divId = 'gistifyEmbeddedGist-' + options.gistId + '_' + index++;
 
-            var meta = '\
-            <div class="gistify-meta gistify-meta-show">\
-              <span class="mini-icon mini-icon-gist"></span>\
-              <span class="gistify-filename"></span>\
-              <div class="gistify-file-actions">\
-                <span class="gistify-language"></span>\
-                <ul class="gistify-button-group">\
-                  <li><a href="" target="_blank" class="gistify-permalink" original-title="Permalink"><span class="mini-icon mini-icon-link"></span></a></li>\
-                  <li><a href="" target="_blank" class="gistify-raw-url" original-title="View Raw"><span class="mini-icon mini-icon-code"></span></a></li>\
-                </ul>\
-              </div>\
-            </div>';
-
             var retVal = thiz.buildAnEditor({
               container: container,
               options: options,
               fileName: fileName,
               id: divId,
-              meta: meta
+              meta: metaForShow
             });
 
             var sizeDeterminer = retVal.sizeDeterminer;
@@ -332,19 +343,42 @@
             permalink = permalink.toLowerCase();
             sizeDeterminer.find('.gistify-permalink').attr('href', permalink);
 
-            aceEditor.setValue(file.content);
             aceEditor.setReadOnly(true);
+            aceEditor.setValue(file.content);
             aceEditor.clearSelection();//by default all content comes as selected, don't know why
 
             container.append('<div class="gistify-gap">');
           }
         }
+
+        if(options.mode == 'edit'){
+          this.edit(element, options);
+        }
+
         container.find('.gistify-gap').last().remove();
         return;
       });
     },
-    edit: function (element, options) {
+    edit: function(element, options) {
+      var container = $(element);
+      var thiz = this;
 
+      $(element).find('.gistify-ace').each(function(index, domElement) {
+        var aceEditor = $.data($(domElement).closest('.gistify-size-determiner')[0], 'gistify-aceEditor');
+        aceEditor.setReadOnly(false);
+        var fileName = $(domElement).prev('.gistify-meta').find('.gistify-filename').text();
+
+        $(domElement).prev('.gistify-meta').replaceWith(metaForCreate);
+
+        var sizeDeterminer = $(domElement).closest('.gistify-size-determiner');
+
+        //put filename into input field
+        sizeDeterminer.find('.gistify-filename-input-container > input').val(fileName);
+
+        thiz.bindCreateEvents(sizeDeterminer, aceEditor);
+      });
+
+      this.appendFooter(container, options);
     },
     get: function(element, options) {
       var files = {};
@@ -364,11 +398,15 @@
         files[fileName] = file;
       }
 
-      return {
+      var retVal = {
         'description': $(element).find('.gistify-gist-desc').val(),
         'public': true,
         'files': files
       };
+
+      if(typeof options.callback == 'function'){
+        options.callback(retVal);
+      }
     },
     save: function(element, options, success, error) {
       var thiz = this;
@@ -382,15 +420,13 @@
           var id = data.id;
           $(element).empty();
           var opt = $.extend({}, defaults, {gistId: id});
-          thiz.show(element, opt);
+          thiz.showOrEdit(element, opt);
 
           if(typeof success == 'function'){
             success(data, textStatus, jqXHR);
           }
         },
         error: function(jqXHR, textStatus, errorThrown) {
-          debugger;
-          
           if(typeof error == 'function'){
             error(jqXHR, textStatus, errorThrown);
           }
@@ -401,7 +437,39 @@
 
   // A really lightweight plugin wrapper around the constructor,
   // preventing against multiple instantiations
-  $.fn[pluginName] = function (options) {
+  $.fn[pluginName] = function (options, callback) {
+
+    if(typeof options == 'string'){
+      if(options == 'edit'){
+        options = {
+          mode: 'convertToEdit'
+        };
+      }
+      else if(options == 'save'){
+        options = {
+          mode: 'save'
+        };
+      }
+      else if(options == 'get'){
+        options = {
+          mode: 'get',
+          callback: callback
+        };
+      }
+    }
+    else{
+      //if data-gist-id is present assume mode:show or edit
+      var gistId = $(this).data('gistid');
+      if(typeof options != 'object'){
+        options = {};
+      }
+
+      if(gistId){
+        options.mode = options.mode ? options.mode : 'show';
+        options.gistId = gistId;
+      }
+    }
+
     return this.each(function () {
       var firstTime = $.data(this, "plugin_" + pluginName) == undefined;
       options = $.extend({}, {firstTime:firstTime}, options);
