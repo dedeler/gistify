@@ -64,8 +64,10 @@
     this.options = $.extend({}, defaults, options);
 
     //show loading
-    var loadingContainerWidth = $(element).empty().append(loadingHtml).find('.gistify-loading').height(this.options.height).width(this.options.width).width();
-    $(element).find('.gistify-loading>img').css('left', loadingContainerWidth / 2 - 64 + 'px');
+    if(options.mode == 'create' || options.mode == 'show' || options.mode == 'edit'){
+      var loadingContainerWidth = $(element).empty().append(loadingHtml).find('.gistify-loading').height(this.options.height).width(this.options.width).width();
+      $(element).find('.gistify-loading>img').css('left', loadingContainerWidth / 2 - 64 + 'px');
+    }
     
     if(this.options.firstTime == false){
 
