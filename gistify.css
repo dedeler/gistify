@@ -12,37 +12,66 @@
 }
 
 .gistify-btn {
-	background:#EAEAEA;
-	border-bottom-left-radius:3px;
-	border-bottom-right-radius:3px;
-	border-color:#DDD #DDD #C5C5C5;
-	border-style:solid;
-	border-top-left-radius:3px;
-	border-top-right-radius:3px;
-	border-width:1px;
-	box-shadow:none;
-	color:#333;
-	cursor:pointer;
-	display:inline-block;
-	font-family:Helvetica, arial, freesans, clean, sans-serif;
-	font-size:13px;
-	font-style:normal;
-	font-variant:normal;
-	font-weight:700;
-	height:24px;
-	line-height:24px;
-	list-style-type:none;
-	margin:0;
-	outline-color:#333;
-	outline-style:none;
-	outline-width:0;
-	padding:0 10px;
-	position:relative;
-	text-align:left;
-	text-decoration:none;
-	text-shadow:rgba(255,255,255,0.901961) 0 1px 0;
-	vertical-align:middle;
-	white-space:nowrap;
+background-color: #EAEAEA;
+background-image: -webkit-linear-gradient(top, #FAFAFA, #EAEAEA);
+background-repeat: repeat-x;
+border-bottom-color: #C5C5C5;
+border-bottom-left-radius: 3px;
+border-bottom-right-radius: 3px;
+border-bottom-style: solid;
+border-bottom-width: 1px;
+border-left-color: #DDD;
+border-left-style: solid;
+border-left-width: 1px;
+border-right-color: #DDD;
+border-right-style: solid;
+border-right-width: 1px;
+border-top-color: #DDD;
+border-top-left-radius: 3px;
+border-top-right-radius: 3px;
+border-top-style: solid;
+border-top-width: 1px;
+box-shadow: rgba(0, 0, 0, 0.0745098) 0px 1px 3px 0px;
+color: #333;
+cursor: pointer;
+display: inline-block;
+font-family: Helvetica, arial, freesans, clean, sans-serif;
+font-size: 13px;
+font-style: normal;
+font-variant: normal;
+font-weight: bold;
+line-height: 13px;
+outline-color: #333;
+outline-style: none;
+outline-width: 0px;
+padding-bottom: 7px;
+padding-left: 15px;
+padding-right: 15px;
+padding-top: 7px;
+position: relative;
+text-decoration: none;
+text-shadow: rgba(255, 255, 255, 0.901961) 0px 1px 0px;
+vertical-align: middle;
+white-space: nowrap;
+height: 29px;
+}
+
+.gistify-loading{
+	padding: 100px 10px 10px 10px;
+}
+
+.gistify-loading > img{
+position: relative;
+}
+
+.gistify-btn:hover{
+	background-color: #3072B3;
+background-image: -webkit-linear-gradient(top, #599BCD, #3072B3);
+border-color: #2A65A0;
+box-shadow: rgba(0, 0, 0, 0.0745098) 0px 1px 3px 0px;
+color: white;
+outline-color: white;
+text-shadow: rgba(0, 0, 0, 0.247059) 0px -1px 0px;
 }
 
 .gistify-button-group {
@@ -188,6 +217,7 @@
 	display:block;
 	margin:0;
 	min-height:60px;
+	font-family:Helvetica, arial, freesans, clean, sans-serif;	
 }
 
 .gistify-language {

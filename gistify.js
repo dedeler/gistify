@@ -7,6 +7,7 @@
   var aceIsAvailable = false;
   var modelist;//ace extension to decide highlight mode by file name
 
+  var loadingHtml = '<div class="gistify-loading"><img src="https://a248.e.akamai.net/assets.github.com/images/spinners/octocat-spinner-64.gif" alt="' + localize('Yükleniyor...') + '"></div>';
   var modeSelectHtml = '<select class="gistify-mode-select" size="1"><option value="abap">ABAP</option><option value="asciidoc">AsciiDoc</option><option value="c9search">C9Search</option><option value="coffee">CoffeeScript</option><option value="coldfusion">ColdFusion</option><option value="csharp">C#</option><option value="css">CSS</option><option value="curly">Curly</option><option value="dart">Dart</option><option value="diff">Diff</option><option value="dot">Dot</option><option value="ftl">FreeMarker</option><option value="glsl">Glsl</option><option value="golang">Go</option><option value="groovy">Groovy</option><option value="haxe">haXe</option><option value="haml">HAML</option><option value="html">HTML</option><option value="c_cpp">C/C++</option><option value="clojure">Clojure</option><option value="jade">Jade</option><option value="java">Java</option><option value="jsp">JSP</option><option value="javascript">JavaScript</option><option value="json">JSON</option><option value="jsx">JSX</option><option value="latex">LaTeX</option><option value="less">LESS</option><option value="lisp">Lisp</option><option value="scheme">Scheme</option><option value="liquid">Liquid</option><option value="livescript">LiveScript</option><option value="logiql">LogiQL</option><option value="lua">Lua</option><option value="luapage">LuaPage</option><option value="lucene">Lucene</option><option value="lsl">LSL</option><option value="makefile">Makefile</option><option value="markdown">Markdown</option><option value="mushcode">TinyMUSH</option><option value="objectivec">Objective-C</option><option value="ocaml">OCaml</option><option value="pascal">Pascal</option><option value="perl">Perl</option><option value="pgsql">pgSQL</option><option value="php">PHP</option><option value="powershell">Powershell</option><option value="python">Python</option><option value="r">R</option><option value="rdoc">RDoc</option><option value="rhtml">RHTML</option><option value="ruby">Ruby</option><option value="scad">OpenSCAD</option><option value="scala">Scala</option><option value="scss">SCSS</option><option value="sass">SASS</option><option value="sh">SH</option><option value="sql">SQL</option><option value="stylus">Stylus</option><option value="svg">SVG</option><option value="tcl">Tcl</option><option value="tex">Tex</option><option value="text" selected>Text</option><option value="textile">Textile</option><option value="tmsnippet">tmSnippet</option><option value="toml">toml</option><option value="typescript">Typescript</option><option value="vbscript">VBScript</option><option value="velocity">Velocity</option><option value="xml">XML</option><option value="xquery">XQuery</option><option value="yaml">YAML</option></select>';
 
   var metaForCreate = '\
@@ -60,6 +61,11 @@
 
     this.element = element;
     this.options = $.extend({}, defaults, options);
+
+    //show loading
+    debugger;
+    var loadingContainerWidth = $(element).empty().append(loadingHtml).find('.gistify-loading').height(this.options.height).width(this.options.width).width();
+    $(element).find('.gistify-loading>img').css('left', loadingContainerWidth / 2 - 64 + 'px');
     
     if(this.options.firstTime == false){
 
@@ -89,7 +95,7 @@
         thiz.showOrEdit(element, thiz.options);
       });
     }
-    else if(this.options.mode == 'convertToEdit'){
+    else if(this.options.mode == 'edit'){
       this.loadAceLibrary(function() {
         thiz.showOrEdit(element, thiz.options);
       });
@@ -352,7 +358,7 @@
         }
 
         if(options.mode == 'edit'){
-          this.edit(element, options);
+          thiz.edit(element, options);
         }
 
         container.find('.gistify-gap').last().remove();
@@ -439,6 +445,7 @@
   // preventing against multiple instantiations
   $.fn[pluginName] = function (options, callback) {
 
+    //process options object
     if(typeof options == 'string'){
       if(options == 'edit'){
         options = {
