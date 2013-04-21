@@ -2,6 +2,7 @@
   'use strict';
 
   var aceLibraryUrl = 'https://raw.github.com/ajaxorg/ace-builds/master/src-min-noconflict/ace.js';
+  var cssUrl = 'gistify.css';
   // var aceLibraryModelistUrl = 'https://raw.github.com/ajaxorg/ace/bc745dc90875152b8c82d283ad0e0361ad5ad27c/lib/ace/ext/modelist.js';
   var gistApiUrl = 'https://api.github.com/gists';
   var aceIsAvailable = false;
@@ -35,7 +36,7 @@
   //css injection
   $(function() {
     $('<link id="gistify-style" rel="stylesheet" type="text/css"></link>').appendTo('head');
-    $('#gistify-style').attr('href', 'gistify.css');
+    $('#gistify-style').attr('href', cssUrl);
   });
 
   // Create the defaults once
@@ -63,7 +64,6 @@
     this.options = $.extend({}, defaults, options);
 
     //show loading
-    debugger;
     var loadingContainerWidth = $(element).empty().append(loadingHtml).find('.gistify-loading').height(this.options.height).width(this.options.width).width();
     $(element).find('.gistify-loading>img').css('left', loadingContainerWidth / 2 - 64 + 'px');
     
@@ -462,6 +462,26 @@
           mode: 'get',
           callback: callback
         };
+      }
+      else if(options == 'aceLibraryUrl'){
+        if(typeof callback == 'string'){
+          console.log("[Gistify] Ace library url changed from " + aceLibraryUrl + ' to ' + callback);
+          aceLibraryUrl = callback;
+        }
+        else{
+          throw new GistifyError('[Invalid argument] When using "aceLibraryUrl" to change Ace libarary url you must provide a url as 2nd argument.');
+        }
+        return;//return here without affecting firstRun flag.
+      }
+      else if(options == 'cssUrl'){
+        if(typeof callback == 'string'){
+          console.log("[Gistify] Gistify css url changed from " + cssUrl + ' to ' + callback);
+          cssUrl = callback;
+        }
+        else{
+          throw new GistifyError('[Invalid argument] When using "cssUrl" to change Gistify css url you must provide a url as 2nd argument.');
+        }
+        return;//return here without affecting firstRun flag.
       }
     }
     else{
