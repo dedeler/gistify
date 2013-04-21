@@ -251,7 +251,7 @@
       });
 
       //append footer
-      container.append('<div class="gistify-footer"><button class="gistify-new-btn">' + localize('Yeni dosya ekle'));
+      container.append('<div class="gistify-footer"><button class="gistify-new-btn gistify-btn">' + localize('Yeni dosya ekle'));
       container.find('.gistify-footer').css('width', options.width);
 
       //bind footer new button's action

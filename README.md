@@ -1,12 +1,12 @@
 Gistify
 =======
 
-jQuery plugin to create and modify Github gists. Converts a div into gist editor.
+jQuery plugin to create and modify Github gists. Converts a div into gist editor. See [demo](http://dedeler.github.io/gistify)
 
 API
 ===
 
-Include `gistify.js` and `gistify.css` into your path. Note that these 2 files must be in same directory as `gistify.js` loads the css file dynamically. See [demo](http://dedeler.github.io/gistify)
+Include `gistify.js` and `gistify.css` into your path. Note that these 2 files must be in same directory as `gistify.js` loads the css file dynamically.
 
 ```
 <script src="gistify.js"></script>

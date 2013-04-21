@@ -1,267 +1,263 @@
-@font-face {
-	font-family:"Octicons Regular";src:url("https://a248.e.akamai.net/assets.github.com/assets/octicons/octicons-regular-webfont-f8cb074da115b589d1518e9701e5ce0145a9a04b.eot");src:url("https://a248.e.akamai.net/assets.github.com/assets/octicons/octicons-regular-webfont-f8cb074da115b589d1518e9701e5ce0145a9a04b.eot#iefix") format("embedded-opentype"),url("https://a248.e.akamai.net/assets.github.com/assets/octicons/octicons-regular-webfont-ca94a86a0e39e28efb023a130cb748731bb0ab58.woff") format("woff"),url("https://a248.e.akamai.net/assets.github.com/assets/octicons/octicons-regular-webfont-83378e6a590d9a4a7242c6cf23f1a1b49ce7aa14.ttf") format("truetype"),url("https://a248.e.akamai.net/assets.github.com/assets/octicons/octicons-regular-webfont-e1451ddc22ffbea19d2e8fca0742d5667940b793.svg#newFontRegular") format("svg");font-weight:normal;font-style:normal;
-}
-
-.mini-icon{
-	display: inline-block;
-	font-family: "Octicons Regular";
-	font-size: 16px;
-	font-style: normal;
-	font-variant: normal;
-	font-weight: normal;
-	height: 16px;
-	line-height: 16px;
-	padding: 8px 3px 0 10px;
-}
-
-.mini-icon-gist:before{
-	content: "\f00e";
-	color: #999;
-}
-
-.mini-icon-link:before{
-	content: "\f05c";
-}
-
-.mini-icon-code:before{
-	content: "\f05f";
-}
-
-.gistify-button-group a,
-.gistify-button-group a:hover,
-.gistify-button-group a:visited,
-.gistify-button-group a:active{
-	color: #333;
-}
-
-.gistify-button-group{
-	display: inline-block;
-	font-family: Helvetica, arial, freesans, clean, sans-serif;
-	font-size: 12px;
-	height: 34px;
-	line-height: 34px;
-	margin: 0;
-	padding: 0;
-	vertical-align: middle;
-	width: 74px;
-}
-
-.gistify-button-group li{
-	border-left: 1px solid #d8d8d8;
-	list-style-type: none;
-	float: left;
-	width: 36px;
-}
-
-.gistify-editor-container {
-	border: 1px solid #ccc;
-	border-radius: 3px;
-}
-
-.gistify-filename{
-	font-weight: bold;
-	font-size: 13px;
-}
-
-.gistify-language{
-	font-weight: bold;
-	font-size: 12px;
-	color: #999;
-	padding: 8px;
+.ace_gutter {
+	background:#fff !important;
+	border-right:1px solid #eee;
+	color:#aaa;
 }
 
 .gistify-bubble {
-	padding: 3px;
-	background: #eee;
-	border-radius: 3px;
-	height: 100%;
+	background:#eee;
+	border-radius:3px;
+	height:100%;
+	padding:3px;
 }
 
-.gistify-editor-container > .ace_editor{
-	width: 100%;
-	height: 100%;
+.gistify-btn {
+	background:#EAEAEA;
+	border-bottom-left-radius:3px;
+	border-bottom-right-radius:3px;
+	border-color:#DDD #DDD #C5C5C5;
+	border-style:solid;
+	border-top-left-radius:3px;
+	border-top-right-radius:3px;
+	border-width:1px;
+	box-shadow:none;
+	color:#333;
+	cursor:pointer;
+	display:inline-block;
+	font-family:Helvetica, arial, freesans, clean, sans-serif;
+	font-size:13px;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:700;
+	height:24px;
+	line-height:24px;
+	list-style-type:none;
+	margin:0;
+	outline-color:#333;
+	outline-style:none;
+	outline-width:0;
+	padding:0 10px;
+	position:relative;
+	text-align:left;
+	text-decoration:none;
+	text-shadow:rgba(255,255,255,0.901961) 0 1px 0;
+	vertical-align:middle;
+	white-space:nowrap;
 }
 
-.gistify-meta{
-	background-color: rgb(250, 250, 250);
-	border-bottom-color: rgb(216, 216, 216);
-	border-bottom-style: solid;
-	border-bottom-width: 1px;
-	color: rgb(85, 85, 85);
-	display: block;
-	font-family: Helvetica, arial, freesans, clean, sans-serif;
-	line-height: 16px;
+.gistify-button-group {
+	display:inline-block;
+	font-family:Helvetica, arial, freesans, clean, sans-serif;
+	font-size:12px;
+	height:34px;
+	line-height:34px;
+	margin:0;
+	padding:0;
+	vertical-align:middle;
+	width:74px;
 }
 
-.gistify-filename-input-container > input{
-	background-attachment: scroll;
-	background-clip: border-box;
-	background-color: white;
-	background-image: none;
-	background-origin: padding-box;
-	background-size: auto;
-	border-bottom-color: #333;
-	border-bottom-style: none;
-	border-bottom-width: 0px;
-	border-left-color: #333;
-	border-left-style: none;
-	border-left-width: 0px;
-	border-right-color: #333;
-	border-right-style: none;
-	border-right-width: 0px;
-	border-top-color: #333;
-	border-top-style: none;
-	border-top-width: 0px;
-	color: #333;
-	cursor: auto;
-	display: inline-block;
-	font-family: helvetica, arial, freesans, sans-serif;
-	font-size: 12px;
-	font-style: normal;
-	font-variant: normal;
-	font-weight: normal;
-	height: 14px;
-	letter-spacing: normal;
-	line-height: normal;
-	margin-bottom: 0px;
-	margin-left: 0px;
-	margin-right: 0px;
-	margin-top: 0px;
-	outline-color: #333;
-	outline-style: none;
-	outline-width: 0px;
-	padding-bottom: 4px;
-	padding-left: 4px;
-	padding-right: 4px;
-	padding-top: 4px;
-	text-align: start;
-	text-indent: 0px;
-	text-shadow: none;
-	text-transform: none;
-	vertical-align: baseline;
-	width: 142px;
-	word-spacing: 0px;
+.gistify-button-group a,.gistify-button-group a:hover,.gistify-button-group a:visited,.gistify-button-group a:active {
+	color:#333;
 }
 
-.gistify-filename-select-container{
-	display: inline-block;
+.gistify-button-group li {
+	border-left:1px solid #d8d8d8;
+	float:left;
+	list-style-type:none;
+	width:36px;
 }
 
-.mini-icon-remove-close:before{
-	content: "\f050";
+.gistify-editor-container {
+	border:1px solid #ccc;
+	border-radius:3px;
 }
 
-.gistify-remove-button{
-	color: #4183C4;
-	float: left;
-	display: inline-block;
-	font-family: "Octicons Regular";
-	font-size: 16px;
-	padding: 3px;
-	text-decoration: none;
+.gistify-editor-container > .ace_editor {
+	height:100%;
+	width:100%;
 }
 
-.gistify-filename-select-container > select{
-	color: #333;
-	display: inline-block;
-	font-family: Helvetica, arial, freesans, clean, sans-serif;
-	font-size: 12px;
-	font-style: normal;
-	font-variant: normal;
-	height: 25px;
-	line-height: 16px;
-	position: relative;
-	text-align: left;
-	text-shadow: white 0px 1px 0px;
-	top: -1px;
-	width: 124px;
-	font-weight: bold;
+.gistify-file-actions {
+	float:right;
+	height:34px;
+	line-height:34px;
 }
 
-.gistify-filename-select-container > select:disabled{
-	color: #999;
+.gistify-filename {
+	font-size:13px;
+	font-weight:700;
 }
 
-.gistify-filename-input-container{
-	background-attachment: scroll;
-	background-clip: border-box;
-	background-color: white;
-	background-image: none;
-	background-origin: padding-box;
-	background-size: auto;
-	border-bottom-color: #CCC;
-	border-bottom-left-radius: 3px;
-	border-bottom-right-radius: 3px;
-	border-bottom-style: solid;
-	border-bottom-width: 1px;
-	border-left-color: #CCC;
-	border-left-style: solid;
-	border-left-width: 1px;
-	border-right-color: #CCC;
-	border-right-style: solid;
-	border-right-width: 1px;
-	border-top-color: #CCC;
-	border-top-left-radius: 3px;
-	border-top-right-radius: 3px;
-	border-top-style: solid;
-	border-top-width: 1px;
-	color: #555;
-	display: inline-block;
-	font-family: Helvetica, arial, freesans, clean, sans-serif;
-	font-size: 12px;
-	font-style: normal;
-	font-variant: normal;
-	font-weight: normal;
-	height: 22px;
-	line-height: 0px;
-	padding-bottom: 1px;
-	padding-left: 2px;
-	padding-right: 2px;
-	padding-top: 1px;
-	text-align: left;
-	text-shadow: white 0px 1px 0px;
-	width: 175px;
+.gistify-filename-input-container {
+	background:border-box padding-box #FFF;
+	border-bottom-left-radius:3px;
+	border-bottom-right-radius:3px;
+	border-color:#CCC;
+	border-style:solid;
+	border-top-left-radius:3px;
+	border-top-right-radius:3px;
+	border-width:1px;
+	color:#555;
+	display:inline-block;
+	font-family:Helvetica, arial, freesans, clean, sans-serif;
+	font-size:12px;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:400;
+	height:22px;
+	line-height:0;
+	padding:1px 2px;
+	text-align:left;
+	text-shadow:#FFF 0 1px 0;
+	width:175px;
 }
 
-.gistify-meta-create{
-	height: 26px;
-	padding: 6px;
+.gistify-filename-input-container > input {
+	background:border-box padding-box #FFF;
+	border-color:#333;
+	border-style:none;
+	border-width:0;
+	color:#333;
+	cursor:auto;
+	display:inline-block;
+	font-family:helvetica, arial, freesans, sans-serif;
+	font-size:12px;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:400;
+	height:14px;
+	letter-spacing:normal;
+	line-height:normal;
+	margin:0;
+	outline-color:#333;
+	outline-style:none;
+	outline-width:0;
+	padding:4px;
+	text-align:start;
+	text-indent:0;
+	text-shadow:none;
+	text-transform:none;
+	vertical-align:baseline;
+	width:142px;
+	word-spacing:0;
 }
 
-.gistify-meta-show{
-	height: 34px;
+.gistify-filename-select-container {
+	display:inline-block;
 }
 
-.gistify-file-actions{
-	float: right;
-	height: 34px;
-	line-height: 34px;
+.gistify-filename-select-container > select {
+	color:#333;
+	display:inline-block;
+	font-family:Helvetica, arial, freesans, clean, sans-serif;
+	font-size:12px;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:700;
+	height:25px;
+	line-height:16px;
+	position:relative;
+	text-align:left;
+	text-shadow:#FFF 0 1px 0;
+	top:-1px;
+	width:124px;
 }
 
-.ace_gutter {
-	background-color: #ffffff !important;
-	border-right: 1px solid #eee;
-	color: #aaa;
+.gistify-filename-select-container > select:disabled {
+	color:#999;
 }
 
-.gistify-gap{
-	height: 10px;
+.gistify-footer {
+	margin-top:10px;
+	text-align:right;
 }
 
-.gistify-gist-desc-container{
-	min-height: 60px;
-	border: 1px solid #cacaca;
-	background-color: #fff;
+.gistify-gap {
+	height:10px;
 }
 
-.gistify-gist-desc-container > textarea{
-	border: 0;
-	margin: 0;
-	min-height: 60px;
-	display: block;
+.gistify-gist-desc-container {
+	background:#fff;
+	border:1px solid #cacaca;
+	min-height:60px;
 }
 
-.gistify-footer{
-	margin-top: 10px;
-	text-align: right;
+.gistify-gist-desc-container > textarea {
+	border:0;
+	display:block;
+	margin:0;
+	min-height:60px;
+}
+
+.gistify-language {
+	color:#999;
+	font-size:12px;
+	font-weight:700;
+	padding:8px;
+}
+
+.gistify-meta {
+	background:#fafafa;
+	border-bottom-color:#d8d8d8;
+	border-bottom-style:solid;
+	border-bottom-width:1px;
+	color:#555;
+	display:block;
+	font-family:Helvetica, arial, freesans, clean, sans-serif;
+	line-height:16px;
+}
+
+.gistify-meta-create {
+	height:26px;
+	padding:6px;
+}
+
+.gistify-meta-show {
+	height:34px;
+}
+
+.gistify-remove-button {
+	color:#4183C4;
+	display:inline-block;
+	float:left;
+	font-family:"Octicons Regular";
+	font-size:16px;
+	padding:3px;
+	text-decoration:none;
+}
+
+.mini-icon {
+	display:inline-block;
+	font-family:"Octicons Regular";
+	font-size:16px;
+	font-style:normal;
+	font-variant:normal;
+	font-weight:400;
+	height:16px;
+	line-height:16px;
+}
+
+.mini-icon-code:before {
+	content:"\f05f";
+}
+
+.mini-icon-gist:before {
+	color:#999;
+	content:"\f00e";
+}
+
+.mini-icon-link:before {
+	content:"\f05c";
+}
+
+.mini-icon-remove-close:before {
+	content:"\f050";
+}
+
+@font-face {
+	font-family:"Octicons Regular";
+	font-style:normal;
+	font-weight:400;
+	src:url(https://a248.e.akamai.net/assets.github.com/assets/octicons/octicons-regular-webfont-f8cb074da115b589d1518e9701e5ce0145a9a04b.eot#iefix) format(embedded-opentype),url(https://a248.e.akamai.net/assets.github.com/assets/octicons/octicons-regular-webfont-ca94a86a0e39e28efb023a130cb748731bb0ab58.woff) format(woff),url(https://a248.e.akamai.net/assets.github.com/assets/octicons/octicons-regular-webfont-83378e6a590d9a4a7242c6cf23f1a1b49ce7aa14.ttf) format(truetype),url(https://a248.e.akamai.net/assets.github.com/assets/octicons/octicons-regular-webfont-e1451ddc22ffbea19d2e8fca0742d5667940b793.svg#newFontRegular) format(svg);
 }
