@@ -11,8 +11,16 @@
 	<button id="loadButton2">Show (id embedded in div)</button>
 	<button id="editButton">Edit</button>
 	<button id="newButton">New</button>
+	<button id="appendButton">Append to form</button>
+	
 	<div id="targetDiv"></div>
+	
 	<div id="targetDiv2" data-gistid="5412353"></div>
+
+	<form id="sampleForm">
+		<input type="text">
+		<button type="submit"></button>
+	</form>
 
 	<script type="text/javascript">
 	$('#loadButton').click(function() {
@@ -35,6 +43,13 @@
 
 	$('#newButton').click(function() {
 		$('#targetDiv').gistify();	
+	});
+
+	$('#appendButton').click(function() {
+		$('#targetDiv').gistify({
+			mode: 'appendToForm',
+			formSelector: '#sampleForm'
+		});
 	});
 	</script>
 </body>

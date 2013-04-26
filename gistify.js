@@ -1,3 +1,25 @@
+/*
+Gistify by Destan Sarpkaya - April 2013
+Visit following link for docs: https://github.com/dedeler/gistify#readme
+
+Version: 0.1.0 - alpha
+
+LICENSE
+-------
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+*/
+
 ;(function ($, window, document) {
   'use strict';
 
@@ -80,8 +102,11 @@
       else if(this.options.mode == 'convertToEdit'){//user enters mode as 'edit' and it is converted to 'convertToEdit' in plugin init
         this.edit(element, this.options);
       }
+      else if(this.options.mode == 'appendToForm'){
+        this.appendToForm(element, this.options);
+      }
       else{
-        throw new GistifyError('[Invalid argument] When gistify once initialized on a DOM element, in further calls, "options.mode" can be "save", "get" or "edit" but was "' + this.options.mode + '"');
+        throw new GistifyError('[Invalid argument] When gistify once initialized on a DOM element, in further calls, "options.mode" can be "save", "get", "edit" or "appendToForm" but was "' + this.options.mode + '"');
       }
       return;
     }
@@ -440,6 +465,32 @@
           }
         }
       });
+    },
+    appendToForm: function(element, options) {
+      debugger;
+      //TODO
+
+      var inputName = options.inputName || 'gistify';
+      var inputId = options.inputId || 'gistify';
+
+      if(typeof options.formSelector != 'string'){
+        throw new GistifyError('[Invalid argument] When using appendToForm mode, you must provide a string for options.formSelector .');
+      }
+
+      this.get(element, {callback: function(gistifyJson) {
+        debugger;
+
+        if($(options.formSelector).find('#' + inputId).length == 0){//create hidden input
+          $(options.formSelector)
+          .append('<input type="hidden" id="' + inputId + '" name="' + inputName + '">')
+          .find('#' + inputId).val(JSON.stringify(gistifyJson));
+        }
+        else{//update hidden input
+          $(options.formSelector)
+          .find('#' + inputId).val(JSON.stringify(gistifyJson)); 
+        }
+
+      }});
     }
   };//Plugin.prototype
 
@@ -500,17 +551,22 @@
     }
 
     return this.each(function () {
+      //whether the plugin invoked for first time or not
       var firstTime = $.data(this, "plugin_" + pluginName) == undefined;
-      options = $.extend({}, {firstTime:firstTime}, options);
+
+      options = $.extend({}, {firstTime:firstTime}, options);//so that options never can be undefined
       $.data(this, "plugin_" + pluginName, new Plugin(this, options));
     });
   };
 
+  /**
+  * Placeholder localization function, to be implemented in future releases.
+  */
   function localize(string) {
     return string;
   }
 
-/**
+/** ==============================================================================================
   To prevent further network traffic ace editor's modelist plugin is embedded into gistify plugin
   Since this function abstracts the loading of modelist plugin,
 it can be downloaded from ace's CDN urls if desired in the future
